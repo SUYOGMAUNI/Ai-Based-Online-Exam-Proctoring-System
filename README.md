@@ -1,3 +1,4 @@
+```markdown
 # 🎓 AI-Based Online Exam Proctoring System
 
 <div align="center">
@@ -152,3 +153,246 @@ Coordinates feature extraction across pipelines:
 ---
 
 ## 📁 Project Structure
+
+```
+Ai-Based-Online-Exam-Proctoring-System/
+│
+├── Frontend/                              # React.js frontend
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── App.js                         # Root component & routing
+│       ├── index.js                       # Entry point
+│       ├── index.css                      # Global styles
+│       │
+│       ├── components/
+│       │   ├── Auth/
+│       │   │   └── Login.jsx              # Login page
+│       │   │
+│       │   ├── Student/
+│       │   │   ├── Dashboard.jsx          # Student home dashboard
+│       │   │   ├── ExamInterface.jsx      # Live exam UI with proctoring
+│       │   │   ├── ExamPage.jsx           # Exam entry and setup
+│       │   │   ├── Examstartmodal.jsx     # Pre-exam confirmation modal
+│       │   │   ├── FaceRegistration.jsx   # Face capture & registration
+│       │   │   └── StudentResults.jsx     # Post-exam results view
+│       │   │
+│       │   ├── Teacher/
+│       │   │   ├── Dashboard.jsx          # Teacher home dashboard
+│       │   │   ├── EditExam.jsx           # Exam creation & editing
+│       │   │   ├── ExamResults.jsx        # View student scores
+│       │   │   └── ReviewDashboard.jsx    # AI violation review panel
+│       │   │
+│       │   ├── Proctoring/
+│       │   │   ├── ExamProctoring.jsx     # Core proctoring component
+│       │   │   ├── FullscreenLock.jsx     # Enforces fullscreen mode
+│       │   │   ├── TabLockMonitor.jsx     # Detects tab switches
+│       │   │   └── DevToolsBlocker.jsx    # Blocks browser DevTools
+│       │   │
+│       │   └── common/
+│       │       ├── Navbar.jsx
+│       │       ├── TopNavbar.jsx
+│       │       ├── Loading.jsx
+│       │       └── ProtectedRoute.jsx
+│       │
+│       ├── hooks/
+│       │   ├── useAIProctoring.js         # Custom hook for AI proctoring logic
+│       │   ├── useAudioMonitoring.js      # Custom hook for audio capture
+│       │   └── useAuth.js                 # Authentication state hook
+│       │
+│       ├── services/
+│       │   ├── api.js                     # Axios API client
+│       │   └── auth.js                    # Auth service (login/logout/token)
+│       │
+│       └── utils/
+│           └── constants.js               # App-wide constants
+│
+└── backend/                               # Django backend
+    ├── ai_engine/                         # Core AI processing modules
+    │   ├── proctoring_pipeline.py         # Main AI orchestrator
+    │   ├── new_face.py                    # Face recognition logic
+    │   ├── gaze1.py                       # Gaze preprocessing (MediaPipe)
+    │   ├── gaze2.py                       # Gaze model inference (PyTorch)
+    │   ├── audio.py                       # Audio monitoring
+    │   ├── model_manager.py               # Model loading & caching
+    │   ├── extractor_manager.py           # Feature extraction coordinator
+    │   ├── db_utils.py                    # Database write helpers
+    │   └── config.py                      # AI engine configuration
+    │
+    ├── ai_models/                         # Pretrained model files
+    │   ├── dlib/
+    │   │   ├── dlib_face_recognition_resnet_model_v1.dat
+    │   │   └── shape_predictor_68_face_landmarks.dat
+    │   └── gaze/
+    │       └── best_model.pth             # Custom gaze estimation model
+    │
+    ├── apps/
+    │   ├── users/                         # User model & token auth
+    │   ├── exams/                         # Exam & question models
+    │   └── proctoring/                    # Violation & session models
+    │
+    ├── config/                            # Django project config
+    │   ├── settings.py
+    │   ├── urls.py
+    │   ├── asgi.py
+    │   └── wsgi.py
+    │
+    ├── media/                             # Captured media storage
+    │   ├── face_registrations/
+    │   ├── face_captures/
+    │   ├── audio_captures/
+    │   ├── gaze_captures/
+    │   └── logs/
+    │
+    ├── manage.py
+    └── requirements.txt
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.8+
+- Node.js 16+
+- PostgreSQL (running locally)
+- pip & npm
+
+### ⚠️ Installing Dlib on Windows
+
+Dlib requires CMake and a C++ build toolchain. Try:
+
+```bash
+pip install cmake
+pip install dlib
+```
+
+If that fails, download a prebuilt wheel matching your Python version from [github.com/sachadee/Dlib](https://github.com/sachadee/Dlib) and install with:
+
+```bash
+pip install dlib-19.x.x-cpXX-cpXX-win_amd64.whl
+```
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/SUYOGMAUNI/Ai-Based-Online-Exam-Proctoring-System.git
+cd Ai-Based-Online-Exam-Proctoring-System
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+Copy the environment file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Run migrations and start the server:
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+### 3. Frontend Setup
+
+```bash
+cd Frontend
+npm install
+npm start
+```
+
+---
+
+## 🔐 Environment Variables
+
+Copy `backend/.env.example` to `backend/.env` and configure:
+
+```env
+SECRET_KEY=change-me
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+DB_NAME=exam_proctoring
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
+
+### PostgreSQL Setup
+
+```sql
+CREATE DATABASE exam_proctoring;
+CREATE USER postgres WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE exam_proctoring TO postgres;
+```
+
+---
+
+## 📡 API Reference
+
+Base path: **`/api/`** — see `backend/apps/api/urls.py` for full router definitions.
+
+Authentication uses **DRF Token Authentication**. Include the token in all protected request headers:
+
+```
+Authorization: Token <your_token>
+```
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/login/` | Login and receive auth token |
+| POST | `/api/auth/register/` | Register a new user |
+| POST | `/api/auth/logout/` | Logout (deletes token) |
+| GET | `/api/auth/me/` | Get current authenticated user |
+| GET | `/api/dashboard/student/` | Student dashboard data |
+| GET | `/api/dashboard/teacher/` | Teacher dashboard data |
+| POST | `/api/student/register-face/` | Submit face image for recognition setup |
+| GET | `/api/student/check-face-registration/` | Check if student face is registered |
+| POST | `/api/proctoring/analyze-frame/` | Submit webcam frame for AI analysis |
+| POST | `/api/proctoring/analyze-audio/` | Submit audio chunk for AI analysis |
+| POST | `/api/proctoring/recalculate-trust-score/` | Recalculate trust score for an attempt |
+| GET | `/api/proctoring/test/` | Proctoring service health check |
+| GET | `/api/exams/` | List all exams |
+| POST | `/api/exams/` | Create a new exam (teacher) |
+| GET | `/api/exams/{exam_id}/` | Get exam details |
+| POST | `/api/exams/{exam_id}/publish/` | Publish exam (teacher) |
+| GET | `/api/exams/{exam_id}/results/` | Get exam results (teacher) |
+| POST | `/api/attempts/start_exam/` | Start a new exam attempt (student) |
+| POST | `/api/attempts/{attempt_id}/submit_exam/` | Submit exam attempt (student) |
+| GET | `/api/violations/?attempt_id={id}` | List violations for an attempt |
+| GET | `/api/attempts/{attempt_id}/violations-with-evidence/` | Violations with evidence (teacher) |
+
+---
+
+## 👨‍💻 Author
+
+**Suyog Mauni**
+
+Full-stack developer & AI enthusiast passionate about building intelligent systems for real-world problems.
+
+🌐 [suyogmauni.com.np](https://suyogmauni.com.np)
+
+---
+
+<div align="center">
+
+Built with dedication for fair and secure online education.
+
+⭐ If you found this project useful, consider giving it a star!
+
+</div>
+```
